@@ -28,7 +28,6 @@ export class PlaneComponent extends LifeCycleComponent {
       if (rand <= this.density) {
         const star = new StarComponent(cellWidth, cellHeight);
         star.style.transform = `translate(${cellWidth * i}px, ${yPos}px)`;
-        console.log(cellWidth * i, yPos);
         this.appendChild(star);
       }
     }
