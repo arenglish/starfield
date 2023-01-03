@@ -1,9 +1,34 @@
+@import "./star.objects";
+
+
 starfield-star {
+
   position: absolute;
   div {
-    height: .1px;
-    width: .1px;
+    @keyframes grow {
+      from {
+        transform: scale(0.005);
+      }
+      to {
+        transform: scale(var(--scale));
+      }
+    }
+    height: 100px;
+    width: 100px;
     position: relative;
-    background-color: white;
+    background-position: center;
+    background-size: contain;
+
+    &.star {
+      background: white;
+    }
+
+    &.galaxy-1 {
+      background: $galaxy-1-url;
+    }
+
+    &.planet {
+      background: $planet-1;
+    }
   }
 }

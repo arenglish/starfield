@@ -4,8 +4,9 @@ import { AppState } from "../../services/state.service";
 import { PlaneComponent } from "../plane/plane.component";
 
 export class CarouselComponent extends LifeCycleComponent {
-  private readonly layers = 20;
-  private readonly speed = 100;
+  private readonly layers = 80;
+  private readonly speed = 20;
+  private readonly windowMultiplier = 1;
 
   private get cycleTime() {
     return 1200 / this.speed;
@@ -16,15 +17,27 @@ export class CarouselComponent extends LifeCycleComponent {
   }
   constructor() {
     super(AppState);
+    this.style.width = `${window.innerWidth * this.windowMultiplier}px`;
+    this.style.height = `${window.innerHeight * this.windowMultiplier}px`;
 
+    let planes = [];
     for (let i = 0; i < this.layers; i++) {
-      const starPlane = new PlaneComponent();
-      // starPlane.style.transition = `transition ${this.cycleTime}`;
-      starPlane.style.animation = `travel ${this.cycleTime}s infinite cubic-bezier(.5,0,1,.5)`;
-      starPlane.style.animationDelay =
-        (this.layerOffsetTime * i).toString() + "s";
-      this.appendChild(starPlane);
+      const starPlane = new PlaneComponent(
+        window.innerWidth,
+        window.innerHeight,
+        this.cycleTime,
+        this.layerOffsetTime * i
+      );
+      planes.push(starPlane);
+      this.setupPlaneCycle(starPlane, i);
     }
+
+    this.append(...planes.reverse());
+  }
+
+  private setupPlaneCycle(plane: HTMLElement, index: number) {
+    plane.style.animation = `travel ${this.cycleTime}s infinite cubic-bezier(1,0,.87,.62)`;
+    plane.style.animationDelay = `${this.layerOffsetTime * index}s`;
   }
 }
 customElements.define("starfield-carousel", CarouselComponent);
